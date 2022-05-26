@@ -8,7 +8,8 @@ async function readFile(filePath)
 
 async function cpyDir(src,dest)
 {
-    fs.promises.mkdir(dest,{recursive: true})
+    fs.promises.rm(dest,{force: true, recursive: true})
+    .then(() => fs.promises.mkdir(dest,{recursive: true}))
     .then(dirPath => {
         return fs.promises.readdir(path.resolve(src),{withFileTypes: true})
     })
@@ -20,7 +21,10 @@ async function cpyDir(src,dest)
             else
                 cpyDir(path.resolve(src,file.name),path.resolve(dest,file.name));
         }
-    });
+    })
+    .catch(err => {
+        console.log(err);
+    })
 }
 
 async function replaceHTML(data,dirPath)
@@ -34,7 +38,7 @@ async function replaceHTML(data,dirPath)
         })
     }
 
-    return data;
+    return data;  
 
 }
 
