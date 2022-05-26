@@ -11,9 +11,15 @@ readline.on('line',(input)=>{
     {
         readline.close();
         outputStream.close();
-        console.log('bye bye');
-        return;
+        process.emit('SIGINT');
     }
     outputStream.write(input + '\n');
+})
+
+
+
+process.on('SIGINT',()=>{
+    console.log('bye bye');
+    process.exit(1);
 })
 
